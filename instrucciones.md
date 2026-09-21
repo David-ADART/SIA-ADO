@@ -6,8 +6,8 @@ Quiero una aplicación que dibuje un mapa cuadrado y ponga aleatoriamente una se
 
 ## 1 Especificación de los parámetros del modelo
 
-- T: El número de km del cuadrado donde se ponen las granjas (por defecto T = 10)
-- Nc: Número de granjas de cria
+- T: El número de km del cuadrado donde se ponen las granjas (por defecto T = 60)
+- Nc: Número de granjas de cria ()
 - Ne: Número de granjas de engorde
 - Nm: Número de mataderos
 - N: El número total de agentes: N = Nc + Ne + Nm
@@ -38,6 +38,8 @@ Cada agente (X) tiene unas variables (entre paréntesis aparecen los valores por
 
 Las variables con subíndice "$_d$" pueden cambiar de un día a otro. Las otras variables se asumen fijas para el agente a lo largo de toda la simulación.
 
+
+
 ### Tabla de conexión entre agentes
 
 Es una tabla con NxN filas y 5 columnas. Cada fila es una conexión entre dos agentes con las siguientes columnas:
@@ -58,6 +60,8 @@ Los valores M(A,B) se generan inicialmente al azar con ciertas restricciones que
 - En todas las demás situaciones M(A,B) = 0
 
 El valor PM(A,B) se le dá por defecto el valor 0.05 para todo par de agentes.
+
+
 
 ## 4 Simulación diaria
 
@@ -181,19 +185,22 @@ La tabla HIM recoge las infecciones del medio al agente y viceversa cada dia con
 - Quiero que el interface sea un cuadro de mandos con estilo táctico militar
 - El interface tendra cuatro pestañas llamadas: "Dashboard", "Agentes", "Resultados", "Análisis"
 - Dentro de la pestaña "Dashboard"
+  - Pon un boton de "Generar Agentes".  Esto debe generar los agentes aleatoricamente con los parámetros guardados en la pestaña "Agentes"
   - Otro de "iniciar simulación", pausarla y reactivarla.
   - Otro botón para "reiniciar" la simulación vuelve a poner las variables AI, AC y MI de todos los agentes a 0, borra todas las tablas HAS, HIT y HIM y pone a 0 el contador de los días.
   - Mapa con las granjas representadas que se va actualizando con las simulaciones de cada día. El transporte entre dos granjas se muestra con una flecha entre ambas en el sentido del transporte. la flecha será de color naranja si ha causado una infeccion o verde si no la ha causado.
   - Debajo del mapa habrá un slide horizontal que permitirá retrotraerse a cualquier dia de la simulación y recuperar como se vería el mapa ese día.
   - Tmabién habra un boton de "play" que permita recorrer toda la secuencias de simulaciones actualizando el mapa.
+
 - Dentro de la pestaña "Agentes"
   - Incluya primero una zona que se llame "Parametros a generar" donde se puedan definir parámetros T, Nc, Ne, y Nm, Para cada uno debe aparecer un nombre en palabras pero corto, y el simbolo entre parentesis. Junto a este pon un símbolo "?", dónde al pasar el ratón abra una pequeña leyenda explicando el significado del parámetro.
   - Incluye una sección de cuadros para incluir valores por defecto de las variables: AR=5, PIMS=0.2, PIME=0.2, PITS=0.9, PITE=0.9, DI1=3, DI2=4, DI3=15.  Pero que el usuario tambien pueda modificar estos valore spor defecto.
-  - A continuación, un boton para generar datos aleatorios
   - debajo aparece la lista de agentes con las columnas de todas sus variables, las variables AID, AT, AX, AY, AN, AI, AC y MI no pueden ser modificadas por el usuario, pero las demás variables se deben poder modificar manualmente por el usuario en esta tabla. Las variables AI, AC y MI serán actualizadas por las simulaciones cada día.
   - Bajo la tabla de agentes aparece una tabla de **conexiones entre agentes**. En esta tabla el usuario puede cambiar manualmente el campo M que previamente se ha generado aleatoriamente siguiendo las reglas especificadas arriba.
   - Todas las tablas deben tener un botón que permita descargarlas en CSV
+
 - Dentro de la pestaña de resultados se inclurirán las tablas HAS, HIT y HIM, con botones en cada una para poder ser descargarlas.
+
 - Dentro de la pestaña de análisis aparecerá:
   - Un gráfico con los dias simulados en el eje-x y la cantidad de agentes en el eje-x.
   - Se mostrarán las series temporales a lo largo de los días de las variables: Numero de granjas cada día con a) Infeccion Silente, b) Infección declarada, c) En desinfeccion y d) en cuarentena

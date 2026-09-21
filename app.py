@@ -401,11 +401,20 @@ tab_dash, tab_agentes, tab_res, tab_analisis = st.tabs(
 
 # ============================= DASHBOARD ====================================
 with tab_dash:
-    c1, c2, c3, c4, c5 = st.columns([1.1, 1.1, 1.1, 1.1, 2])
+    c0, c1, c2, c3, c4, c5 = st.columns([1.25, 1.15, 0.9, 1.05, 1.0, 1.2])
+    with c0:
+        if st.button("⊕ GENERAR AGENTES", use_container_width=True,
+                     help="Genera el teatro con los parámetros de la pestaña Agentes."):
+            try:
+                sim.generar(dict(st.session_state.params_ui))
+                st.session_state["pending_slider_reset"] = True
+                st.rerun()
+            except ValueError as exc:
+                st.error(str(exc))
     with c1:
         if st.button("▶ INICIAR SIMULACIÓN", use_container_width=True, disabled=sim.agentes.empty):
             if sim.agentes.empty:
-                st.warning("Genere agentes primero (pestaña Agentes).")
+                st.warning("Genere agentes primero.")
             elif int((sim.agentes["AI"] != 0).sum()) == 0 and sim.day == 0:
                 st.warning("Marque al menos un brote silente (click en el mapa o lista).")
             else:
@@ -438,7 +447,7 @@ with tab_dash:
     with col_side:
         st.markdown('<div class="panel-title">FOCO INICIAL · DÍA 0</div>', unsafe_allow_html=True)
         if sim.agentes.empty:
-            st.info("Vaya a **Agentes**, fije parámetros y pulse GENERAR.")
+            st.info("Fije T, Nc, Ne, Nm en **Agentes** y pulse GENERAR AGENTES.")
         else:
             opciones = [
                 f"{int(r.AID)} · {r.AT} · {NOMBRE_TIPO[r.AT]}"
@@ -486,7 +495,7 @@ with tab_dash:
             vista,
             sim.conexiones,
             hit_dia,
-            float(sim.params.get("T", 10)),
+            float(sim.params.get("T", 60)),
             mostrar_radios=mostrar_radios if not sim.agentes.empty else False,
             mostrar_rutas=mostrar_rutas if not sim.agentes.empty else False,
         )
@@ -584,7 +593,7 @@ with tab_agentes:
             max_value=100.0,
             value=float(params["T"]),
             step=1.0,
-            help="Lado del cuadrado donde se colocan las granjas, en kilómetros. Por defecto T=10.",
+            help="Lado del cuadrado donde se colocan las granjas, en kilómetros. Por defecto T=60.",
         )
     with p2:
         params["Nc"] = st.number_input(
@@ -659,16 +668,10 @@ with tab_agentes:
     st.session_state.params_ui = params
     if not sim.agentes.empty:
         sim.params["max_dias"] = int(params["max_dias"])
-    st.caption(f"N = Nc + Ne + Nm = {int(params['Nc']) + int(params['Ne']) + int(params['Nm'])} agentes.")
-
-    if st.button("GENERAR AGENTES ALEATORIOS", type="primary"):
-        try:
-            sim.generar(params)
-            st.session_state["pending_slider_reset"] = True
-            st.success(f"Generados {len(sim.agentes)} agentes en un teatro de {params['T']} km.")
-            st.rerun()
-        except ValueError as exc:
-            st.error(str(exc))
+    st.caption(
+        f"N = Nc + Ne + Nm = {int(params['Nc']) + int(params['Ne']) + int(params['Nm'])} agentes. "
+        "Pulse GENERAR AGENTES en el Dashboard para crear el teatro con estos valores."
+    )
 
     st.markdown('<div class="panel-title">TABLA DE AGENTES</div>', unsafe_allow_html=True)
     st.caption("AID, AT, AX, AY, AN, AI, AC y MI no se editan a mano. AR, PIMS, PIME, PITS, PITE, DI1–DI3 sí.")

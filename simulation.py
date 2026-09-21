@@ -52,7 +52,7 @@ HIM_COLS = ["dia", "Y", "IMY", "IYM"]
 def valores_por_defecto() -> dict:
     """Parámetros iniciales del prototipo (sección 7 de las instrucciones)."""
     return {
-        "T": 10.0,       # lado del mapa, en km
+        "T": 60.0,       # lado del mapa, en km (por defecto T = 60)
         "Nc": 8,         # granjas de cría
         "Ne": 12,        # granjas de engorde
         "Nm": 3,         # mataderos
