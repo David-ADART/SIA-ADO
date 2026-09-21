@@ -1,0 +1,10 @@
+.venv/
+.venv_app/
+.venv39/
+.tools/
+__pycache__/
+*.py[cod]
+.DS_Store
+*.tgz
+.env
+.env.*
