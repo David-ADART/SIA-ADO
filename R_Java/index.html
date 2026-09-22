@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIA-ADO | Peste Porcina (R)</title>
+  <link rel="stylesheet" href="/css/estilos.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="tactical-banner">
+    <div class="kicker">ONEDEFENSE · SIA-ADO · MOTOR R · PLUMBER API</div>
+    <h1>Simulación táctica de peste porcina</h1>
+    <div class="sub">TEATRO DE OPERACIONES · GRANJAS DE CRÍA / ENGORDE / MATADEROS · CONTAGIO POR TRANSPORTE Y MEDIO</div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="dashboard">DASHBOARD</button>
+    <button class="tab" data-tab="agentes">AGENTES</button>
+    <button class="tab" data-tab="resultados">RESULTADOS</button>
+    <button class="tab" data-tab="analisis">ANÁLISIS</button>
+  </nav>
+
+  <section id="panel-dashboard" class="panel active">
+    <div class="btn-row">
+      <button id="btn-generar">⊕ GENERAR AGENTES</button>
+      <button id="btn-simular" disabled>▶ INICIAR SIMULACIÓN</button>
+      <button id="btn-reiniciar" disabled>↺ REINICIAR</button>
+      <button id="btn-play" disabled>▷ PLAY SECUENCIA</button>
+    </div>
+    <p id="status-line" class="status">STANDBY · API R en espera</p>
+    <div class="kpi-row" id="kpis"></div>
+    <div class="dash-grid">
+      <div class="map-wrap">
+        <canvas id="mapa" width="720" height="620"></canvas>
+        <div class="legend-bar">
+          <span><i class="dot" style="background:#3dff7a"></i>AI=0 Limpio</span>
+          <span><i class="dot" style="background:#ffd000"></i>AI=1 Silente</span>
+          <span><i class="dot" style="background:#ff3b3b"></i>AI=2 Declarada</span>
+          <span><i class="dot" style="background:#3ec6ff"></i>AI=3 Desinfección</span>
+          <span><i class="dot ring"></i>Cuarentena</span>
+          <span>○ GC &nbsp; □ GE &nbsp; ◇ MA</span>
+          <span style="color:#3dff7a">→ transporte limpio</span>
+          <span style="color:#ff7a18">→ transporte que infectó</span>
+        </div>
+        <label class="slider-lab">Retroceder al día
+          <input type="range" id="slider-dia" min="0" max="0" value="0" disabled />
+          <span id="slider-val">0</span>
+        </label>
+      </div>
+      <aside class="side">
+        <div class="panel-title">FOCO INICIAL · DÍA 0</div>
+        <p class="hint">Click en el mapa o marque granjas. Luego INICIAR SIMULACIÓN llama a <code>POST /simular</code>.</p>
+        <select id="sel-brotes" multiple size="10"></select>
+        <label class="check"><input type="checkbox" id="chk-radios" /> Radios de seguridad AR</label>
+        <label class="check"><input type="checkbox" id="chk-rutas" checked /> Flechas de transporte del día</label>
+      </aside>
+    </div>
+  </section>
+
+  <section id="panel-agentes" class="panel">
+    <div class="panel-title">PARÁMETROS A GENERAR</div>
+    <div class="form-grid" id="form-params"></div>
+    <div class="panel-title">VALORES POR DEFECTO DEL AGENTE</div>
+    <div class="form-grid" id="form-agente"></div>
+    <div class="panel-title">TABLA DE AGENTES</div>
+    <div class="table-scroll"><table id="tabla-agentes"></table></div>
+    <div class="panel-title">CONEXIONES ENTRE AGENTES</div>
+    <div class="table-scroll"><table id="tabla-conexiones"></table></div>
+  </section>
+
+  <section id="panel-resultados" class="panel">
+    <div class="panel-title">TABLAS HISTÓRICAS (HAS / HIT / HIM)</div>
+    <div class="res-grid">
+      <div>
+        <h3>HAS — estados</h3>
+        <div class="table-scroll tall"><table id="tabla-has"></table></div>
+      </div>
+      <div>
+        <h3>HIT — transportes</h3>
+        <div class="table-scroll tall"><table id="tabla-hit"></table></div>
+      </div>
+      <div>
+        <h3>HIM — medio</h3>
+        <div class="table-scroll tall"><table id="tabla-him"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="panel-analisis" class="panel">
+    <div class="panel-title">ESTADÍSTICOS FINALES</div>
+    <div id="stats-box" class="stats-box">Sin simulación todavía.</div>
+    <div class="charts">
+      <canvas id="chart-n"></canvas>
+      <canvas id="chart-anim"></canvas>
+      <canvas id="chart-cost"></canvas>
+    </div>
+    <div class="panel-title">COSTES (€)</div>
+    <div class="form-grid" id="form-costes"></div>
+  </section>
+
+  <script src="js/api.js"></script>
+  <script src="js/mapa.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
